@@ -19,6 +19,8 @@
 =end
 
 module MasterMind
+
+  # Class to handle player actions
   class Player
     attr_accessor :secret
 
@@ -28,6 +30,7 @@ module MasterMind
     end
   end
 
+  # Class to store the secret and comparisons to it
   class Secret
     def initialize
       @combo = []
@@ -43,6 +46,7 @@ module MasterMind
     end
   end
 
+  # Class to manage the interactions between players and the secret
   class Game
     attr_reader :options
 
