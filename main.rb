@@ -26,5 +26,10 @@ module MasterMind
   end
 
   class Game
+
+    def initialize(players)
+      @guess = 0
+      @players = players
+    end
   end
 end
