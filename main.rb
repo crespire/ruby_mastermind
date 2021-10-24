@@ -1,7 +1,7 @@
 =begin
   Player
-    * Has a secret
     * Has a name
+    * Optionally, has secret
     * Can make a guess
       * Take input, send to board
   Secret
@@ -9,7 +9,7 @@
     * Provides feedback on the guess.
   GameRound
     * Sets secret validation after asking
-      * Default case should be: 4 slots, taking 1 - 6
+      * Default case should be: 4 slots, taking 1 - 6, no blanks and no duplicates
       * Additional options
         * More slots
         * Are blanks allowed? (Add 0 to options)
@@ -45,6 +45,15 @@ module MasterMind
 
     def confirm_rules
       # Show the current rules, and ask if any changes to be made
+    end
+
+    def welcome_message
+      # Send a welcome message displaying the rules.
+    end
+
+    def codemaster?
+      # Determine which player is codemaster
+      # That player will get to make a secret
     end
 
   end
