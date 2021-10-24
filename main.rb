@@ -20,6 +20,10 @@
 
 module MasterMind
   class Player
+    def initialize(name)
+      @name = name
+      @secret = Secret.new()
+    end
   end
 
   class Secret
