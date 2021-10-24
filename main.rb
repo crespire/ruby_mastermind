@@ -39,10 +39,11 @@ module MasterMind
     def compare(guess)
       # Compare guess with @combo
       # Initalize a results array [0, 0]
+      # Make a copy of guess, as we want to mutate it
       # For each element in @combo, check the same element in guess_copy.
       #   Any exact match should award an "exact match" point (correct position and element), and remove that element from guess_copy
       # For each element left in guess_copy, if the element is in @combo, then award a "match" point
-      # return [0, 0]
+      # return results array
     end
   end
 
