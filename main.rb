@@ -4,7 +4,7 @@
     * Has a name
     * Can make a guess
       * Take input, send to board
-  Board
+  Secret
     * Evaluates guesses against the secret
     * Provides feedback on the guess.
   GameRound
@@ -22,7 +22,7 @@ module MasterMind
   class Player
   end
 
-  class Board
+  class Secret
   end
 
   class Game
