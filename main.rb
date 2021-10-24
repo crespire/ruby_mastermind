@@ -20,6 +20,8 @@
 
 module MasterMind
   class Player
+    attr_accessor :secret
+
     def initialize(name)
       @name = name
       @secret = nil
