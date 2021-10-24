@@ -33,10 +33,19 @@ module MasterMind
   end
 
   class Game
+    attr_reader :options
 
     def initialize(players)
       @guess = 0
       @players = players
+    
+      # Default game options
+      @options = {slots: 4, characters: 6, blanks: false, duplicates: false}
     end
+
+    def confirm_rules
+      # Show the current rules, and ask if any changes to be made
+    end
+
   end
 end
