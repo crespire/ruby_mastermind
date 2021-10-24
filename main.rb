@@ -30,6 +30,13 @@ module MasterMind
     def initialize
       @combo = []
     end
+
+    def compare(guess)
+      # Compare guess with @combo
+      # For each element in @combo, check the same element in guess.
+      #   Any exact match should push a "red peg" (correct position and element)
+      # 
+    end
   end
 
   class Game
