@@ -27,6 +27,9 @@ module MasterMind
   end
 
   class Secret
+    def initialize
+      @combo = []
+    end
   end
 
   class Game
