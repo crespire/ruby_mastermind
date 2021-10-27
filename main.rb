@@ -22,11 +22,12 @@ module MasterMind
 
   # Class to handle player actions
   class Player
-    attr_accessor :secret, :name
+    attr_accessor :secret, :name, :codemaster
 
     def initialize(name)
       @name = name
       @secret = nil
+      @codemaster = false
     end
   end
 
@@ -93,13 +94,14 @@ module MasterMind
       # That player will get to make a secret
       valid = false
       until valid do
-        @players.each { |e| print e.name }
+        @players.each_with_index { |e, i| print "Player #{i+1}: #{e.name}\n" }
         print "Which player will be the code master? (1 or 2) "
         @codemaster = gets.chomp!.to_i
         valid = @codemaster.between?(1, 2)
       end
       @codemaster -= 1
       puts "#{@players[@codemaster].name} is the codemaster!"
+      @players[@codemaster].codemaster=true
     end
 
     def get_code
