@@ -22,7 +22,7 @@ module MasterMind
 
   # Class to handle player actions
   class Player
-    attr_accessor :secret
+    attr_accessor :secret, :name
 
     def initialize(name)
       @name = name
@@ -54,6 +54,7 @@ module MasterMind
     def initialize()
       @guess = 0
       @players = []
+      @codemaster = 0
     
       # Default game options
       @options = {turns: 12, length: 4, characters: 6, blanks: false, duplicates: false}
@@ -79,15 +80,27 @@ module MasterMind
       puts "The code #{@options[:blanks] ? "can" : "can't"} contain any blanks."
       puts "The code #{@options[:duplicates] ? "can" : "can't"} contain duplicates."
       puts "The codebreaker has #{@options[:turns]} tries to break the code."
+
+      codemaster?
     end
 
     def change_rules
-      # Allow players to change the rules
+      # Allow players to change the rules - work on this after the main game is complete.
     end
 
     def codemaster?
       # Determine which player is codemaster
       # That player will get to make a secret
+      valid = false
+      until valid do
+        @players.each { |e| print e.name }
+        print "Which player will be the code master? (1 or 2) "
+        @codemaster = gets.chomp!.to_i
+        if index.between?(1, 2)
+          valid = true
+      end
+      @codemaster -= 1
+      puts "#{@players[@codemaster].name} is the codemaster!"
     end
 
     def valid_code?
