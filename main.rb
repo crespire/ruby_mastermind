@@ -56,7 +56,7 @@ module MasterMind
       @players = []
     
       # Default game options
-      @options = {turns: 12, slots: 4, characters: 6, blanks: false, duplicates: false}
+      @options = {turns: 12, length: 4, characters: 6, blanks: false, duplicates: false}
       @options.default = ''
     end
 
@@ -75,7 +75,7 @@ module MasterMind
       @players.push(Player.new(name))
       puts "Hello #{name}! Let's get started!"
       puts "Here are the current rules for the game."
-      puts "The code must be %{slots} characters in length, and there are %{characters} options for each slot." % @options
+      puts "The code must be %{length} characters in length, and there are %{characters} options for each slot." % @options
       puts "The code #{@options[:blanks] ? "can" : "can't"} contain any blanks."
       puts "The code #{@options[:duplicates] ? "can" : "can't"} contain duplicates."
       puts "The codebreaker has #{@options[:turns]} tries to break the code."
