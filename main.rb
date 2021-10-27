@@ -18,6 +18,8 @@
     * Keeps track of which player is guessing
 =end
 
+# frozen_string_literal: true
+
 module MasterMind
 
   # Class to handle player actions
