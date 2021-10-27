@@ -51,20 +51,38 @@ module MasterMind
   class Game
     attr_reader :options
 
-    def initialize(players)
+    def initialize()
       @guess = 0
-      @players = players
+      @players = []
     
       # Default game options
-      @options = {slots: 4, characters: 6, blanks: false, duplicates: false}
+      @options = {turns: 12, slots: 4, characters: 6, blanks: false, duplicates: false}
+      @options.default = ''
     end
 
-    def confirm_rules
-      # Show the current rules, and ask if any changes to be made
-    end
-
-    def welcome_message
+    def setup
+      # Get player names, and create players array
       # Send a welcome message displaying the rules.
+      # Ask if players want to change the rules
+
+      puts "Welcome to Mastermind!"
+      print "Let's get set up! Player 1, please enter your name: "
+      name = gets.chomp!
+      @players.push(Player.new(name))
+      puts "Hello #{name}, welcome to Mastermind!"
+      print "Player 2, please enter your name: "
+      name = gets.chomp!
+      @players.push(Player.new(name))
+      puts "Hello #{name}! Let's get started!"
+      puts "Here are the current rules for the game."
+      puts "The code must be %{slots} length, and there are %{characters} optiosn for each slot." % @options
+      puts "The code can#{!@options[blanks] ? "not"} contain any blanks."
+      puts "The code can#{!@options[duplicates] ? "not"} contain duplicates."
+      puts "The codebreaker has #{@options[turns]} tries to break the code."
+    end
+
+    def change_rules
+      # Allow players to change the rules
     end
 
     def codemaster?
@@ -72,5 +90,12 @@ module MasterMind
       # That player will get to make a secret
     end
 
+    def valid_code?
+      # Checks if the code provided is within the rules.
+      
+    end
   end
 end
+
+mstr = Game.new
+mstr.setup
