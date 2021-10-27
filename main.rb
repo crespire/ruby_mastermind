@@ -96,7 +96,7 @@ module MasterMind
         @players.each { |e| print e.name }
         print "Which player will be the code master? (1 or 2) "
         @codemaster = gets.chomp!.to_i
-        if index.between?(1, 2)
+        if @codemaster.between?(1, 2)
           valid = true
       end
       @codemaster -= 1
@@ -105,7 +105,7 @@ module MasterMind
 
     def get_code
     end
-    
+
     def get_guess
     end
 
