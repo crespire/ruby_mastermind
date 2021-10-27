@@ -75,10 +75,10 @@ module MasterMind
       @players.push(Player.new(name))
       puts "Hello #{name}! Let's get started!"
       puts "Here are the current rules for the game."
-      puts "The code must be %{slots} length, and there are %{characters} optiosn for each slot." % @options
-      puts "The code can#{!@options[blanks] ? "not"} contain any blanks."
-      puts "The code can#{!@options[duplicates] ? "not"} contain duplicates."
-      puts "The codebreaker has #{@options[turns]} tries to break the code."
+      puts "The code must be %{slots} characters in length, and there are %{characters} options for each slot." % @options
+      puts "The code #{@options[:blanks] ? "can" : "can't"} contain any blanks."
+      puts "The code #{@options[:duplicates] ? "can" : "can't"} contain duplicates."
+      puts "The codebreaker has #{@options[:turns]} tries to break the code."
     end
 
     def change_rules
@@ -97,5 +97,5 @@ module MasterMind
   end
 end
 
-mstr = Game.new
+mstr = MasterMind::Game.new()
 mstr.setup
