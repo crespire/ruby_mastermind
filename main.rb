@@ -103,6 +103,12 @@ module MasterMind
       puts "#{@players[@codemaster].name} is the codemaster!"
     end
 
+    def get_code
+    end
+    
+    def get_guess
+    end
+
     def valid_code?
       # Checks if the code provided is within the rules.
       
