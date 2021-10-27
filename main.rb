@@ -96,8 +96,7 @@ module MasterMind
         @players.each { |e| print e.name }
         print "Which player will be the code master? (1 or 2) "
         @codemaster = gets.chomp!.to_i
-        if @codemaster.between?(1, 2)
-          valid = true
+        valid = @codemaster.between?(1, 2)
       end
       @codemaster -= 1
       puts "#{@players[@codemaster].name} is the codemaster!"
@@ -111,7 +110,6 @@ module MasterMind
 
     def valid_code?
       # Checks if the code provided is within the rules.
-      
     end
   end
 end
