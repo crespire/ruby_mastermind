@@ -105,9 +105,11 @@ module MasterMind
     end
 
     def get_code
+      # Once a code master is established, get a secret. Check the secret to make sure it's valid.
     end
 
     def get_guess
+      # Get a guess. Check the secret to make sure it's valid.
     end
 
     def valid_code?
