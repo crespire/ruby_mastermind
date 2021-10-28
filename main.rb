@@ -106,9 +106,8 @@ module MasterMind
 
     def get_code
       # Once a code master is established, get a secret. Check the secret to make sure it's valid.
-      gen_code = @options[:blanks].times.map { rand(1..@options[:characters]) }
+      gen_code = @options[:length].times.map { rand(1..@options[:characters]) }
       @players[@codemaster].secret=(Secret.new(gen_code))
-      p @players[@codemaster].secret
     end
 
     def get_guess
