@@ -83,8 +83,6 @@ module MasterMind
       puts "The code #{@options[:blanks] ? "can" : "can't"} contain any blanks."
       puts "The code #{@options[:duplicates] ? "can" : "can't"} contain duplicates."
       puts "The codebreaker has #{@options[:turns]} tries to break the code."
-
-      codemaster?
     end
 
     def change_rules
@@ -111,8 +109,6 @@ module MasterMind
       gen_code = @options[:blanks].times.map { rand(1..@options[:characters]) }
       @players[@codemaster].secret=(Secret.new(gen_code))
       p @players[@codemaster].secret
-
-      #Check code.
     end
 
     def get_guess
@@ -127,4 +123,5 @@ end
 
 mstr = MasterMind::Game.new()
 mstr.setup
+mstr.codemaster?
 mstr.get_code
