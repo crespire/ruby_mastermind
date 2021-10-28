@@ -111,6 +111,8 @@ module MasterMind
       gen_code = @options[:blanks].times.map { rand(1..@options[:characters]) }
       @players[@codemaster].secret=(Secret.new(gen_code))
       p @players[@codemaster].secret
+
+      #Check code.
     end
 
     def get_guess
