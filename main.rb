@@ -117,25 +117,39 @@ module MasterMind
 
     def valid_code?(code)
       # Checks if the code provided is within the rules.
-      code = @players[@codemaster].secret
-      blanks = @options[:blanks]
-
-      if code.length == @options[:length] && code.all? { |digit| digit.between?(blanks ? 0 : 1, @options[:characters])} 
-        if !@options[:duplicates]
-          code.length == code.uniq.length
-        end
-        true
-      end
-      false
+      return false unless right_length?(code)
+      return false unless in_bounds?(code)
+      return false unless has_duplicates?(code) && @options[:duplicates]
+      
+      true
     end
 
     def play_round
       # Play all guess rounds.
     end
-  end
+
+    def right_length?(code)
+      # Test if the code is the right length
+      code.length == @options[:length]
+    end
+
+    def in_bounds?(code)
+      # Test if the code has any blanks
+      code.all? { |digit| digit.between?{@options[:blanks] ? 0 : 1, @options[:characters] }
+    end
+
+    def has_duplicates?(code)
+      # Test if the code has duplicates
+      code.length == code.uniq.length
+    end
 end
 
 mstr = MasterMind::Game.new()
 mstr.setup
 mstr.codemaster?
 mstr.get_code
+p mstr.valid_code?([0, 3, 4, 6]) # False, has a blank
+p mstr.valid_code?([1, 2, 4, 3]) # True
+p mstr.valid_code?([1, 3, 2, 5, 4]) # False, too long
+p mstr.valid_code?([3, 2, 7, 1]) # False, out of bounds
+p mstr.valid_code?([3, 2, 1, 3]) # False, duplicate number
