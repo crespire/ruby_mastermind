@@ -35,8 +35,8 @@ module MasterMind
 
   # Class to store the secret and comparisons to it
   class Secret
-    def initialize
-      @combo = []
+    def initialize(combination)
+      @combo = combination
     end
 
     def compare(guess)
@@ -108,6 +108,9 @@ module MasterMind
 
     def get_code
       # Once a code master is established, get a secret. Check the secret to make sure it's valid.
+      gen_code = @options[:blanks].times.map { rand(1..@options[:characters]) }
+      @players[@codemaster].secret=(Secret.new(gen_code))
+      p @players[@codemaster].secret
     end
 
     def get_guess
@@ -122,3 +125,4 @@ end
 
 mstr = MasterMind::Game.new()
 mstr.setup
+mstr.get_code
