@@ -106,16 +106,31 @@ module MasterMind
 
     def get_code
       # Once a code master is established, get a secret. Check the secret to make sure it's valid.
-      gen_code = @options[:length].times.map { rand(1..@options[:characters]) }
+      gen_code = @options[:length].times.map { rand(1..@options[:characters]) } # For now, we generate one and have the player guess it.
       @players[@codemaster].secret=(Secret.new(gen_code))
+
     end
 
     def get_guess
       # Get a guess. Check the secret to make sure it's valid.
     end
 
-    def valid_code?
+    def valid_code?(code)
       # Checks if the code provided is within the rules.
+      code = @players[@codemaster].secret
+      blanks = @options[:blanks]
+
+      if code.length == @options[:length] && code.all? { |digit| digit.between?(blanks ? 0 : 1, @options[:characters])} 
+        if !@options[:duplicates]
+          code.length == code.uniq.length
+        end
+        true
+      end
+      false
+    end
+
+    def play_round
+      # Play all guess rounds.
     end
   end
 end
