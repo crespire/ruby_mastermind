@@ -133,7 +133,8 @@ module MasterMind
     end
 
     def in_bounds?(code)
-      code.all? { |digit| digit.between?(@options[:blanks] ? 0 : 1, @options[:characters]) }
+      lower = @options[:blanks] ? 0 : 1
+      code.all? { |digit| digit.between?(lower, @options[:characters]) }
     end
 
     def has_duplicates?(code)
