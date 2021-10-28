@@ -135,7 +135,7 @@ module MasterMind
 
     def in_bounds?(code)
       # Test if the code has any blanks
-      code.all? { |digit| digit.between?{@options[:blanks] ? 0 : 1, @options[:characters] }
+      code.all? { |digit| digit.between?(@options[:blanks] ? 0 : 1, @options[:characters]_
     end
 
     def has_duplicates?(code)
