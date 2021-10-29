@@ -68,7 +68,7 @@ module MasterMind
 
     def initialize()
       @players = []
-      @codemaster = nil
+      @codemaster = 0
       @use_comp = nil
     
       # Default game options
@@ -102,9 +102,10 @@ module MasterMind
         print "Player 2, please enter your name: "
         name = gets.chomp!
         @players.push(Player.new(name))
+        puts "Welcome, #{name}!"
       end
 
-      puts "Hello #{name}! Let's get started!"
+      puts "Let's get started!"
       puts "Here are the current rules for the game."
       puts "The code must be %{length} characters in length, and there are %{characters} options for each slot." % @options
       puts "The code #{@options[:blanks] ? "can" : "can't"} contain any blanks."
@@ -119,6 +120,7 @@ module MasterMind
     def codemaster?
       # Not enough players, comptuer is code master
       @players[@codemaster].codemaster=true
+      generate_code
       puts "The computer is the codemaster!"
       return if @players.length == 2
 
@@ -133,6 +135,7 @@ module MasterMind
       @codemaster -= 1
       puts "#{@players[@codemaster].name} is the codemaster!"
       @players[@codemaster].codemaster=true
+      get_code
     end
 
     def generate_code
@@ -183,6 +186,8 @@ module MasterMind
     end
 
     def play_round
+      codemaster?
+
       secret = @players[@codemaster].secret
 
       start = @options[:blanks] ? 0 : 1
@@ -200,6 +205,9 @@ module MasterMind
     end
 
     private
+    def reset
+      @codemaster = 0
+    end
 
     def right_length?(code)
       code.length == @options[:length]
@@ -216,17 +224,16 @@ module MasterMind
   end
 end
 
-# mstr = MasterMind::Game.new()
-# mstr.setup
-# mstr.codemaster?
-# mstr.play_round
+mstr = MasterMind::Game.new()
+mstr.setup
+mstr.play_round
 
 # Testing guess compare
-code = MasterMind::Secret.new([4, 3, 6, 2])
-p code.compare([2,2,2,2])
-p code.compare([2,6,3,4])
-p code.compare([4,1,2,6])
-
-code2 = MasterMind::Secret.new([5,6,1,3])
-p code2.compare([1,1,2,2])
-p code2.compare([1,1,1,1])
+#code = MasterMind::Secret.new([4, 3, 6, 2])
+#p code.compare([2,2,2,2])
+#p code.compare([2,6,3,4])
+#p code.compare([4,1,2,6])
+ 
+#code2 = MasterMind::Secret.new([5,6,1,3])
+# p code2.compare([1,1,2,2])
+# p code2.compare([1,1,1,1])
