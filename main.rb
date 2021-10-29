@@ -190,13 +190,7 @@ module MasterMind
   end
 end
 
-# mstr = MasterMind::Game.new()
-# mstr.setup
-# mstr.codemaster?
-# mstr.play_round
-
-# Testing guess compare
-code = MasterMind::Secret.new([4, 3, 6, 2])
-p code.compare([2,2,2,2])
-p code.compare([2,6,3,4])
-p code.compare([4,1,2,6])
+mstr = MasterMind::Game.new()
+mstr.setup
+mstr.codemaster?
+mstr.play_round
