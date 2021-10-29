@@ -130,9 +130,7 @@ module MasterMind
       until valid do
         print "Please enter a guess: "
         guess = gets.chomp!.chars.map { |c| c.to_i }
-        p guess
         valid = valid_guess?(guess)
-        p valid
       end
       guess
     end
