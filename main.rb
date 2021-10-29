@@ -91,6 +91,8 @@ module MasterMind
         valid = answer.between?(1,2)
       end
 
+      @players.push(Player.new('Computer'))
+
       print "Let's get set up! Player 1, please enter your name: "
       name = gets.chomp!
       @players.push(Player.new(name))
@@ -115,13 +117,15 @@ module MasterMind
     end
 
     def codemaster?
-      # Determine which player is codemaster
-      # That player will get to make a secret
-      return if @players.length == 1
+      # Not enough players, comptuer is code master
+      @players[@codemaster].codemaster=true
+      puts "The computer is the codemaster!"
+      return if @players.length == 2
 
+      # Require input
       valid = false
       until valid do
-        @players.each_with_index { |e, i| print "Player #{i+1}: #{e.name}\n" }
+        @players.each_with_index { |e, i| print "Player #{i+1}: #{e.name}\n" if i > 0 }
         print "Which player will be the code master? (1 or 2) "
         @codemaster = gets.chomp!.to_i
         valid = @codemaster.between?(1, 2)
@@ -132,8 +136,6 @@ module MasterMind
     end
 
     def generate_code
-      # Once a code master is established, get a secret. Check the secret to make sure it's valid.
-      # For now, we generate one and have the player guess it.
       valid = false
       until valid do
         gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
@@ -143,14 +145,13 @@ module MasterMind
     end
 
     def get_code
-      # Once a code master is established, get a secret. Check the secret to make sure it's valid.
-      # For now, we generate one and have the player guess it.
       valid = false
       until valid do
-        gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
-        valid = valid_code?(gen_code)
+        print "#{@players[@codemaster].name}, please provide a code: "
+        code = gets.chomp!.chars.map { |c| c.to_i }
+        valid = valid_code?(code)
       end
-      @players[@codemaster].secret=(Secret.new(gen_code))
+      @players[@codemaster].secret=(Secret.new(code))
     end
 
     def get_guess
@@ -182,10 +183,6 @@ module MasterMind
     end
 
     def play_round
-      if @players[@codemaster].secret.nil? 
-        get_code
-      end
-
       secret = @players[@codemaster].secret
 
       start = @options[:blanks] ? 0 : 1
