@@ -55,7 +55,7 @@ module MasterMind
           guess_copy.delete_at(index)
         end
       end
-      guess_copy.each { |element| results[1] += 1 if @combo.includes?(element) }
+      guess_copy.each { |element| results[1] += 1 if @combo.include?(element) }
       results
     end
   end
