@@ -54,6 +54,7 @@ module MasterMind
           results[0] += 1
           guess_copy.delete_at(index)
         end
+      end
       guess_copy.each { |element| results[1] += 1 if @combo.includes?(element) }
       results
     end
@@ -115,12 +116,25 @@ module MasterMind
     def get_code
       # Once a code master is established, get a secret. Check the secret to make sure it's valid.
       # For now, we generate one and have the player guess it.
-      gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
+      valid = false
+      until valid do
+        gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
+        valid = valid_code?(gen_code)
+      end
       @players[@codemaster].secret=(Secret.new(gen_code))
     end
 
     def get_guess
       # Get a guess. Check the secret to make sure it's valid.
+      valid = false
+      until valid do
+        print "Please enter a guess: "
+        guess = gets.chomp!.chars.map { |c| c.to_i }
+        p guess
+        valid = valid_code?(guess)
+        p valid
+      end
+      guess
     end
 
     def valid_code?(code)
@@ -137,10 +151,23 @@ module MasterMind
         get_code
       end
 
-      (1..@options[:turns]).times do |i|
+      secret = @players[@codemaster].secret
+
+      start = @options[:blanks] ? 0 : 1
+      dup = @options[:duplicates] ? "" : "no"
+      puts "Remember, the code is #{@options[:length]} characters long and can be from #{start} to #{@options[:characters]}."
+      puts "The code has #{dup} duplicate numbers."
+      p secret
+
+      @options[:turns].times do |i|
         # Run the rounds
+        guess = get_guess
+        result = secret.compare(guess)
+        puts "#{i+1}: You got #{result[0]} numbers in right, and in the right place! There were #{result[1]} additional matches, not in the right place."
       end
     end
+
+    private
 
     def right_length?(code)
       code.length == @options[:length]
@@ -160,4 +187,4 @@ end
 mstr = MasterMind::Game.new()
 mstr.setup
 mstr.codemaster?
-mstr.get_code
+mstr.play_round
