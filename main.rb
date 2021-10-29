@@ -131,7 +131,7 @@ module MasterMind
         print "Please enter a guess: "
         guess = gets.chomp!.chars.map { |c| c.to_i }
         p guess
-        valid = valid_code?(guess)
+        valid = valid_guess?(guess)
         p valid
       end
       guess
@@ -142,6 +142,14 @@ module MasterMind
       return false unless right_length?(code)
       return false unless in_bounds?(code)
       return false if has_duplicates?(code) && !@options[:duplicates]
+      
+      true
+    end
+
+
+    def valid_guess?(code)
+      # Checks if the code provided is the right length only.
+      return false unless right_length?(code)
       
       true
     end
