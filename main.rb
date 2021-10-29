@@ -40,16 +40,10 @@ module MasterMind
     end
 
     def compare(guess)
-      # Compare guess with @combo
-      # Initalize a results array [0, 0]
-      # Make a copy of guess & @combo, as we want to mutate the values
-      # For each element in @combo, check the same element in guess_copy.
-      #   Any exact match should award an "exact match" point (correct position and element), and remove that element from guess_copy
-      # For each element left in guess_copy, if the element is in @combo, then award a "match" point
-      # return results array
       results = [0, 0]
       combo_copy = @combo.dup
 
+      # Checks position/value match
       combo_copy.each_with_index do |element, index|
         if guess[index] == element
           results[0] += 1
@@ -58,6 +52,7 @@ module MasterMind
         end
       end
 
+      # Checks value match
       guess.each do |element|
         results[1] += 1 if combo_copy.include?(element)
       end
@@ -204,5 +199,6 @@ end
 
 # Testing guess compare
 code = MasterMind::Secret.new([4, 3, 6, 2])
-guess = [2, 2, 2, 2]
-p code.compare(guess)
+p code.compare([2,2,2,2])
+p code.compare([2,6,3,4])
+p code.compare([4,1,2,6])
