@@ -53,9 +53,11 @@ module MasterMind
       end
 
       # Checks value match
-      guess.each do |element|
+      guess.each_with_index do |element, index|
         results[1] += 1 if combo_copy.include?(element)
+        guess.delete_at(index)
       end
+
       results
     end
   end
@@ -66,7 +68,8 @@ module MasterMind
 
     def initialize()
       @players = []
-      @codemaster = 0
+      @codemaster = nil
+      @use_comp = nil
     
       # Default game options
       @options = {turns: 12, length: 4, characters: 6, blanks: false, duplicates: false}
@@ -79,13 +82,26 @@ module MasterMind
       # Ask if players want to change the rules
 
       puts "Welcome to Mastermind!"
+      
+      valid = false
+      until valid do
+        print "How many players are there today? "
+        answer = gets.chomp!.to_i
+        @use_comp = answer == 1 ? true : false
+        valid = answer.between?(1,2)
+      end
+
       print "Let's get set up! Player 1, please enter your name: "
       name = gets.chomp!
       @players.push(Player.new(name))
       puts "Hello #{name}, welcome to Mastermind!"
-      print "Player 2, please enter your name: "
-      name = gets.chomp!
-      @players.push(Player.new(name))
+
+      if !@use_comp
+        print "Player 2, please enter your name: "
+        name = gets.chomp!
+        @players.push(Player.new(name))
+      end
+
       puts "Hello #{name}! Let's get started!"
       puts "Here are the current rules for the game."
       puts "The code must be %{length} characters in length, and there are %{characters} options for each slot." % @options
@@ -101,6 +117,8 @@ module MasterMind
     def codemaster?
       # Determine which player is codemaster
       # That player will get to make a secret
+      return if @players.length == 1
+
       valid = false
       until valid do
         @players.each_with_index { |e, i| print "Player #{i+1}: #{e.name}\n" }
@@ -111,6 +129,17 @@ module MasterMind
       @codemaster -= 1
       puts "#{@players[@codemaster].name} is the codemaster!"
       @players[@codemaster].codemaster=true
+    end
+
+    def generate_code
+      # Once a code master is established, get a secret. Check the secret to make sure it's valid.
+      # For now, we generate one and have the player guess it.
+      valid = false
+      until valid do
+        gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
+        valid = valid_code?(gen_code)
+      end
+      @players[@codemaster].secret=(Secret.new(gen_code))
     end
 
     def get_code
@@ -203,3 +232,4 @@ p code.compare([4,1,2,6])
 
 code2 = MasterMind::Secret.new([5,6,1,3])
 p code2.compare([1,1,2,2])
+p code2.compare([1,1,1,1])
