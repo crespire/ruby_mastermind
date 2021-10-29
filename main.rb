@@ -64,7 +64,6 @@ module MasterMind
     attr_reader :options
 
     def initialize()
-      @guess = 0
       @players = []
       @codemaster = 0
     
@@ -134,7 +133,13 @@ module MasterMind
     end
 
     def play_round
-      # Play all guess rounds.
+      if @players[@codemaster].secret.nil? 
+        get_code
+      end
+
+      (1..@options[:turns]).times do |i|
+        # Run the rounds
+      end
     end
 
     def right_length?(code)
