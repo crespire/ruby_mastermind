@@ -60,7 +60,7 @@ module MasterMind
 
       # Checks value match
       guess_copy.each do |element|
-        results[1] += combo_copy.count(element)
+        results[1] = combo_copy.count(element) unless element.nil?
       end
 
       results
