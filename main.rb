@@ -47,6 +47,15 @@ module MasterMind
       #   Any exact match should award an "exact match" point (correct position and element), and remove that element from guess_copy
       # For each element left in guess_copy, if the element is in @combo, then award a "match" point
       # return results array
+      results = [0, 0]
+      guess_copy = guess.dup
+      @combo.each_with_index do |element, index|
+        if guess_copy[index] == element
+          results[0] += 1
+          guess_copy.delete_at(index)
+        end
+      guess_copy.each { |element| results[1] += 1 if @combo.includes?(element) }
+      results
     end
   end
 
@@ -106,9 +115,9 @@ module MasterMind
 
     def get_code
       # Once a code master is established, get a secret. Check the secret to make sure it's valid.
-      gen_code = @options[:length].times.map { rand(1..@options[:characters]) } # For now, we generate one and have the player guess it.
+      # For now, we generate one and have the player guess it.
+      gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
       @players[@codemaster].secret=(Secret.new(gen_code))
-
     end
 
     def get_guess
