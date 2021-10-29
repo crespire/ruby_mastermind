@@ -42,20 +42,25 @@ module MasterMind
     def compare(guess)
       results = [0, 0]
       combo_copy = @combo.dup
+      guess_copy = guess.dup
 
       # Checks position/value match
-      combo_copy.each_with_index do |element, index|
+      @combo.each_with_index do |element, index|
+        print "Comparing #{element} at #{index} with #{guess[index]}"
         if guess[index] == element
+          puts ", we got exact match!"
           results[0] += 1
-          guess.delete_at(index)
-          combo_copy.delete_at(index)
+          guess_copy[index] = nil
+          combo_copy[index] = nil
         end
+        puts "\n"
       end
 
+      puts "Combo copy: #{combo_copy} \n Guess copy: #{guess_copy}"
+
       # Checks value match
-      guess.each_with_index do |element, index|
-        results[1] += 1 if combo_copy.include?(element)
-        guess.delete_at(index)
+      guess_copy.each do |element|
+        results[1] += combo_copy.count(element)
       end
 
       results
@@ -200,7 +205,7 @@ module MasterMind
         # Run the rounds
         guess = get_guess
         result = secret.compare(guess)
-        puts "#{i+1}: You got #{result[0]} numbers in right, and in the right place! There were #{result[1]} additional matches, not in the right place."
+        puts "#{i+1}: You got #{result[0]} numbers in right, and in the right place! There were #{result[1]} additional matches, but not in the right place."
       end
     end
 
@@ -224,15 +229,17 @@ module MasterMind
   end
 end
 
-mstr = MasterMind::Game.new()
-mstr.setup
-mstr.play_round
+#mstr = MasterMind::Game.new()
+#mstr.setup
+# mstr.play_round
 
 # Testing guess compare
-#code = MasterMind::Secret.new([4, 3, 6, 2])
-#p code.compare([2,2,2,2])
-#p code.compare([2,6,3,4])
-#p code.compare([4,1,2,6])
+code = MasterMind::Secret.new([4, 3, 6, 2])
+p code.compare([2,2,2,2])
+p code.compare([2,6,3,4])
+p code.compare([4,1,2,6])
+p code.compare([3,3,3,3])
+# p code.compare([4,3,6,2])
  
 #code2 = MasterMind::Secret.new([5,6,1,3])
 # p code2.compare([1,1,2,2])
