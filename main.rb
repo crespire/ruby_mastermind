@@ -130,18 +130,17 @@ module MasterMind
       # Not enough players, comptuer is code master
       @players[@codemaster].codemaster=true
       generate_code
-      puts "The computer is the codemaster!"
+      puts "The computer is the codemaster!" if @players.length == 2
       return if @players.length == 2
 
       # Require input
       valid = false
       until valid do
-        @players.each_with_index { |e, i| print "Player #{i+1}: #{e.name}\n" if i > 0 }
+        @players.each_with_index { |e, i| print "Player #{i}: #{e.name}\n" if i > 0 }
         print "Which player will be the code master? (1 or 2) "
         @codemaster = gets.chomp!.to_i
         valid = @codemaster.between?(1, 2)
       end
-      @codemaster -= 1
       puts "#{@players[@codemaster].name} is the codemaster!"
       @players[0].codemaster=false
       @players[@codemaster].codemaster=true
@@ -170,8 +169,16 @@ module MasterMind
     def get_guess
       # Get a guess. Check the secret to make sure it's valid.
       valid = false
+
+      name = nil
+      if use_comp
+        name = @players[1].name
+      else
+        name = @players[3-@codemaster].name
+      end
+
       until valid do
-        print "Please enter a guess: "
+        print "#{name}, please enter a guess: "
         guess = gets.chomp!.chars.map { |c| c.to_i }
         valid = valid_guess?(guess)
       end
@@ -200,10 +207,11 @@ module MasterMind
 
       secret = @players[@codemaster].secret
 
+      system("clear") || system("cls")
+
       start = @options[:blanks] ? 0 : 1
-      dup = @options[:duplicates] ? "" : "no"
-      puts "Remember, the code is #{@options[:length]} characters long and can be from #{start} to #{@options[:characters]}."
-      puts "The code has #{dup} duplicate numbers."
+      dup = @options[:duplicates] ? '' : 'no '
+      puts "Remember, the code is #{@options[:length]} characters long and can entries are between #{start} and #{@options[:characters]}. The code has #{dup}duplicate entries."
 
       broken = false
       @options[:turns].times do |i|
