@@ -43,6 +43,10 @@ module MasterMind
       @combo.length
     end
 
+    def to_s
+      @combo.to_s
+    end
+
     def compare(guess)
       results = [0, 0]
       combo_copy = @combo.dup
@@ -50,17 +54,12 @@ module MasterMind
 
       # Checks position/value match
       @combo.each_with_index do |element, index|
-        print "Comparing #{element} at #{index} with #{guess[index]}"
         if guess[index] == element
-          puts ", we got exact match!"
           results[0] += 1
           guess_copy[index] = nil
           combo_copy[index] = nil
         end
-        puts "\n"
       end
-
-      puts "Combo copy: #{combo_copy} \n Guess copy: #{guess_copy}"
 
       # Checks value match
       guess_copy.each do |element|
@@ -204,19 +203,42 @@ module MasterMind
       dup = @options[:duplicates] ? "" : "no"
       puts "Remember, the code is #{@options[:length]} characters long and can be from #{start} to #{@options[:characters]}."
       puts "The code has #{dup} duplicate numbers."
-      p secret
 
+      broken = false
       @options[:turns].times do |i|
         # Run the rounds
         guess = get_guess
         result = secret.compare(guess)
-        puts "#{i+1}: You got #{result[0]} numbers in right, and in the right place! There were #{result[1]} additional matches, but not in the right place."
+        if result[0] == secret.length
+          broken = true
+          puts "You won! You took #{i+1} turns to guess the code, which was #{secret}."
+          break
+        else
+          puts "#{i+1}: You got #{result[0]} numbers in right, and in the right place! There were #{result[1]} additional matches, but not in the right place."
+        end
+      end
+
+      puts "You didn't break the code! The code was #{secret}." unless broken
+
+      valid = false
+      until valid do
+        print "Would you like to play again? (y/n) "
+        ans = gets.chomp!
+        valid = ['y', 'n'].include?(ans)
+      end
+
+      if ans == 'y'
+        reset
+      else
+        exit
       end
     end
 
     private
     def reset
       @codemaster = 0
+      setup
+      play_round
     end
 
     def right_length?(code)
@@ -234,18 +256,18 @@ module MasterMind
   end
 end
 
-#mstr = MasterMind::Game.new()
-#mstr.setup
-#mstr.play_round
+mstr = MasterMind::Game.new()
+mstr.setup
+mstr.play_round
 
 # Testing guess compare
-code = MasterMind::Secret.new([4, 3, 6, 2])
-p code.compare([2,2,2,2])
-p code.compare([2,6,3,4])
-p code.compare([4,1,2,6])
-p code.compare([3,3,3,3])
-p code.compare([4,3,6,2])
-p code.length
+#code = MasterMind::Secret.new([4, 3, 6, 2])
+#p code.compare([2,2,2,2])
+#p code.compare([2,6,3,4])
+#p code.compare([4,1,2,6])
+#p code.compare([3,3,3,3])
+#p code.compare([4,3,6,2])
+#p code.length
  
 #code2 = MasterMind::Secret.new([5,6,1,3])
 # p code2.compare([1,1,2,2])
