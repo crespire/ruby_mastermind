@@ -39,6 +39,10 @@ module MasterMind
       @combo = combination
     end
 
+    def length
+      @combo.length
+    end
+
     def compare(guess)
       results = [0, 0]
       combo_copy = @combo.dup
@@ -60,7 +64,7 @@ module MasterMind
 
       # Checks value match
       guess_copy.each do |element|
-        results[1] = combo_copy.count(element) unless element.nil?
+        results[1] += combo_copy.count(element) unless element.nil?
       end
 
       results
@@ -139,6 +143,7 @@ module MasterMind
       end
       @codemaster -= 1
       puts "#{@players[@codemaster].name} is the codemaster!"
+      @players[0].codemaster=false
       @players[@codemaster].codemaster=true
       get_code
     end
@@ -231,7 +236,7 @@ end
 
 #mstr = MasterMind::Game.new()
 #mstr.setup
-# mstr.play_round
+#mstr.play_round
 
 # Testing guess compare
 code = MasterMind::Secret.new([4, 3, 6, 2])
@@ -239,7 +244,8 @@ p code.compare([2,2,2,2])
 p code.compare([2,6,3,4])
 p code.compare([4,1,2,6])
 p code.compare([3,3,3,3])
-# p code.compare([4,3,6,2])
+p code.compare([4,3,6,2])
+p code.length
  
 #code2 = MasterMind::Secret.new([5,6,1,3])
 # p code2.compare([1,1,2,2])
