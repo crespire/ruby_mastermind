@@ -44,7 +44,7 @@ module MasterMind
     end
 
     def to_s
-      @combo.to_s
+      @combo.join('-')
     end
 
     def compare(guess)
@@ -62,6 +62,7 @@ module MasterMind
       end
 
       # Checks value match
+      guess_copy.uniq!      
       guess_copy.each do |element|
         results[1] += combo_copy.count(element) unless element.nil?
       end
@@ -214,7 +215,7 @@ module MasterMind
           puts "You won! You took #{i+1} turns to guess the code, which was #{secret}."
           break
         else
-          puts "#{i+1}: You got #{result[0]} numbers in right, and in the right place! There were #{result[1]} additional matches, but not in the right place."
+          puts "#{i+1}: You got #{result[0]} exact matches, and there were #{result[1]} additional matches, but not in the right place."
         end
       end
 
