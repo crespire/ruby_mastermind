@@ -171,7 +171,7 @@ module MasterMind
       valid = false
 
       name = nil
-      if use_comp
+      if @use_comp
         name = @players[1].name
       else
         name = @players[3-@codemaster].name
