@@ -170,12 +170,7 @@ module MasterMind
       # Get a guess. Check the secret to make sure it's valid.
       valid = false
 
-      name = nil
-      if @use_comp
-        name = @players[1].name
-      else
-        name = @players[3-@codemaster].name
-      end
+      name = @use_comp ? @players[1].name : @players[3-@codemaster].name
 
       until valid do
         print "#{name}, please enter a guess: "
@@ -212,8 +207,8 @@ module MasterMind
       start = @options[:blanks] ? 0 : 1
       dup = @options[:duplicates] ? '' : 'no '
       puts "Remember, the code is #{@options[:length]} characters long and can entries are between #{start} and #{@options[:characters]}. The code has #{dup}duplicate entries."
-
       broken = false
+
       @options[:turns].times do |i|
         # Run the rounds
         guess = get_guess
@@ -282,7 +277,7 @@ end
 # p code2.compare([1,1,2,2])
 # p code2.compare([1,1,1,1])
 
-code3 = MasterMind::Secret.new([1,2,1,5])
-p code3.compare([1,1,2,2]) #Expect [1, 2]
-p code3.compare([2,2,1,1]) #Expect [2, 1]
-p code3.compare([1,2,3,4]) #Expect [2, 0]
+#code3 = MasterMind::Secret.new([1,2,1,5])
+#p code3.compare([1,1,2,2]) #Expect [1, 2]
+#p code3.compare([2,2,1,1]) #Expect [2, 1]
+#p code3.compare([1,2,3,4]) #Expect [2, 0]
