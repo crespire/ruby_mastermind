@@ -131,10 +131,11 @@ module MasterMind
       valid = false
       until valid do
         puts "Player 0: Computer" if @use_comp
+        lower_bound = @use_comp ? 0 : 1
         @players.each_with_index { |e, i| puts "Player #{i}: #{e.name}\n" if i > 0  }
         print "Which player will be the code master? "
         @codemaster = gets.chomp!.to_i
-        valid = @codemaster.between?(0, (@players.length - 1))
+        valid = @codemaster.between?(lower_bound, (@players.length - 1))
       end
       puts "#{@players[@codemaster].name} is the codemaster!"
       @players[@codemaster].codemaster=true
