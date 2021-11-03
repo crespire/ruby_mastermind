@@ -127,24 +127,23 @@ module MasterMind
     end
 
     def codemaster?
-      # Not enough players, comptuer is code master
-      @players[@codemaster].codemaster=true
-      generate_code
-      puts "The computer is the codemaster!" if @players.length == 2
-      return if @players.length == 2
-
       # Require input
       valid = false
       until valid do
-        @players.each_with_index { |e, i| print "Player #{i}: #{e.name}\n" if i > 0 }
-        print "Which player will be the code master? (1 or 2) "
+        puts "Player 0: Computer" if @use_comp
+        @players.each_with_index { |e, i| puts "Player #{i}: #{e.name}\n" if i > 0  }
+        print "Which player will be the code master? "
         @codemaster = gets.chomp!.to_i
-        valid = @codemaster.between?(1, 2)
+        valid = @codemaster.between?(0, (@players.length - 1))
       end
       puts "#{@players[@codemaster].name} is the codemaster!"
-      @players[0].codemaster=false
       @players[@codemaster].codemaster=true
-      get_code
+
+      if @codemaster.zero? && @use_comp then
+        generate_code
+      else
+        get_code
+      end
     end
 
     def generate_code
@@ -260,9 +259,9 @@ module MasterMind
   end
 end
 
-#mstr = MasterMind::Game.new()
-#mstr.setup
-#mstr.play_round
+mstr = MasterMind::Game.new()
+mstr.setup
+mstr.play_round
 
 # Testing guess compare
 #code = MasterMind::Secret.new([4, 3, 6, 2])
