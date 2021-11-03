@@ -183,7 +183,7 @@ module MasterMind
       # Computer guess.
       puts "The computer is making a guess..."
       if previous.nil?
-        guess = @options[:length].times.map { rand(1..@options[:characters]) }
+        guess = [1, 1, 2, 2]
       else
         # use hints
       end
