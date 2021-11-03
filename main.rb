@@ -47,6 +47,10 @@ module MasterMind
       @combo.join('-')
     end
 
+    def to_i
+      @combo.join.to_i
+    end
+
     def compare(guess)
       results = [0, 0]
       combo_copy = @combo.dup
@@ -148,7 +152,6 @@ module MasterMind
     end
 
     def generate_code
-      puts "Making code..."
       valid = false
       until valid do
         gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
@@ -195,8 +198,11 @@ module MasterMind
         last = Secret.new(previous)
         puts "Last guess: #{last}, current possibilities: #{@possible.length}"
         @possible.filter! { |code| code if (last.compare(code.to_s.chars.map(&:to_i)) <=> hints) >= 0 }
-        puts "Filtered possibilities: #{@possible.length}"
-        guess = @possible.sample.to_s.chars.map(&:to_i)
+        puts "Filtered possibilities: #{@possible.length}, contains answer: #{@possible.include?(@players[@codemaster].secret.to_i)}"
+
+        
+
+        guess = @possible.sample.to_s.chars.map(&:to_i) # I think I'm missing something here or in my filter. Sometimes it's not reducingf the possibilties enough
       end
       puts "Guess is: #{guess}"
       guess
