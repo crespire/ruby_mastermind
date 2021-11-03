@@ -180,17 +180,12 @@ module MasterMind
     end
 
     def generate_guess(previous = nil, hints = nil)
-      # Computer guess. Check the secret to make sure it's valid.
-      valid = false
-
-      until valid do
-        puts "The computer is making a guess..."
-        if previous.nil?
-          guess = @options[:length].times.map { rand(1..@options[:characters]) }
-        else
-          # use hints
-        end
-        valid = valid_guess?(guess)
+      # Computer guess.
+      puts "The computer is making a guess..."
+      if previous.nil?
+        guess = @options[:length].times.map { rand(1..@options[:characters]) }
+      else
+        # use hints
       end
       guess
     end
