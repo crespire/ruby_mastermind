@@ -179,6 +179,22 @@ module MasterMind
       guess
     end
 
+    def generate_guess(previous = nil, hints = nil)
+      # Computer guess. Check the secret to make sure it's valid.
+      valid = false
+
+      until valid do
+        puts "The computer is making a guess..."
+        if previous.nil?
+          guess = @options[:length].times.map { rand(1..@options[:characters]) }
+        else
+          # use hints
+        end
+        valid = valid_guess?(guess)
+      end
+      guess
+    end
+
     def valid_code?(code)
       # Checks if the code provided is within the rules.
       return false unless right_length?(code)
@@ -187,7 +203,6 @@ module MasterMind
       
       true
     end
-
 
     def valid_guess?(code)
       # Checks if the code provided is the right length only.
@@ -207,10 +222,12 @@ module MasterMind
       dup = @options[:duplicates] ? '' : 'no '
       puts "Remember, the code is #{@options[:length]} characters long and can entries are between #{start} and #{@options[:characters]}. The code has #{dup}duplicate entries."
       broken = false
+      guess = nil
+      result = nil
 
       @options[:turns].times do |i|
         # Run the rounds
-        guess = get_guess
+        guess = @use_comp ? generate_guess(guess, result) : get_guess
         result = secret.compare(guess)
         if result[0] == secret.length
           broken = true
