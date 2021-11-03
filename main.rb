@@ -159,7 +159,7 @@ module MasterMind
       valid = false
       until valid do
         print "#{@players[@codemaster].name}, please provide a code: "
-        code = gets.chomp!.chars.map { |c| c.to_i }
+        code = gets.chomp.chars.map { |c| c.to_i }
         valid = valid_code?(code)
       end
       @players[@codemaster].secret=(Secret.new(code))
@@ -184,9 +184,19 @@ module MasterMind
       puts "The computer is making a guess..."
       if previous.nil?
         guess = [1, 1, 2, 2]
+        base = @options[:blanks] ? 0 : 1
+        start_num = (base.to_s * @options[:length]).to_i
+        end_num = start_num * @options[:characters].to_i
+        @possible = (start_num..end_num).to_a
       else
         # use hints
+        last = Secret.new(previous)
+        puts "Last guess: #{last}, current possibilities: #{@possible.length}"
+        @possible.filter! { |code| code if (last.compare(code.to_s.chars.map(&:to_i)) <=> hints) >= 0 }
+        puts "Filtered possibilities: #{@possible.length}"
+        guess = @possible.sample.to_s.chars.map(&:to_i)
       end
+      puts "Guess is: #{guess}"
       guess
     end
 
@@ -252,6 +262,7 @@ module MasterMind
     private
     def reset
       @codemaster = 0
+      @players = []
       setup
       play_round
     end
