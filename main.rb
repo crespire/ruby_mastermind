@@ -148,6 +148,7 @@ module MasterMind
     end
 
     def generate_code
+      puts "Making code..."
       valid = false
       until valid do
         gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
@@ -222,7 +223,7 @@ module MasterMind
 
       secret = @players[@codemaster].secret
 
-      system("clear") || system("cls")
+      # system("clear") || system("cls")
 
       start = @options[:blanks] ? 0 : 1
       dup = @options[:duplicates] ? '' : 'no '
@@ -233,7 +234,7 @@ module MasterMind
 
       @options[:turns].times do |i|
         # Run the rounds
-        guess = @use_comp ? generate_guess(guess, result) : get_guess
+        guess = @codemaster.zero? ? get_guess : generate_guess(guess, result)
         result = secret.compare(guess)
         if result[0] == secret.length
           broken = true
