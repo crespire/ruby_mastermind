@@ -200,9 +200,7 @@ module MasterMind
         @possible.filter! { |code| code if (last.compare(code.to_s.chars.map(&:to_i)) <=> hints) >= 0 }
         puts "Filtered possibilities: #{@possible.length}, contains answer: #{@possible.include?(@players[@codemaster].secret.to_i)}"
 
-        
-
-        guess = @possible.sample.to_s.chars.map(&:to_i) # I think I'm missing something here or in my filter. Sometimes it's not reducingf the possibilties enough
+        guess = @possible.sample.to_s.chars.map(&:to_i) # I think I'm missing something here or in my filter. Sometimes it's not reducing the possibilties
       end
       puts "Guess is: #{guess}"
       guess
