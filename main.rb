@@ -63,6 +63,7 @@ module MasterMind
       @players = []
       @codemaster = 0
       @use_comp = nil
+      @possible = nil
     
       # Default game options
       @options = {turns: 12, length: 4, characters: 6, blanks: false, duplicates: false}
@@ -292,9 +293,12 @@ module MasterMind
 
     private
     def reset
-      @codemaster = 0
       @players = []
+      @codemaster = 0
+      @use_comp = nil
+      @possible = nil
       @options = {turns: 12, length: 4, characters: 6, blanks: false, duplicates: false}
+
       setup
       play_round
     end
