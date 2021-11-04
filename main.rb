@@ -110,6 +110,60 @@ module MasterMind
       puts "The code #{@options[:blanks] ? "can" : "can't"} contain any blanks."
       puts "The code #{@options[:duplicates] ? "can" : "can't"} contain duplicates."
       puts "The codebreaker has #{@options[:turns]} tries to break the code."
+
+      print "Did you want to change the rules? (y/n) "
+      input = gets.chomp until (['y', 'n'].include?(input))
+
+      if input == 'y' then
+        map = Hash.new('')
+        puts "Let's change the rules of the game!"
+        @options.each_with_index do | (k, v), i|
+          puts "#{i}: #{k.to_s.capitalize} is #{v}"
+          map[i] = k
+        end
+
+        p map
+
+        loop do
+          puts "What would you like to change?"
+          print "You can use the numbers in front of the option, or if you're done, type 'done' "
+          valid = false
+          until valid do
+            ans = gets.chomp
+            valid = (ans.to_i.between?(-1, map.length - 1)) || ans == 'done'
+          end
+
+          if ans == 'done'
+            break
+          else
+            print "Changing #{map[ans.to_i].capitalize}. "
+            change = 0
+
+            case ans.to_i
+            when 0 # turns
+              print "Turns: (1-50) "
+              change = gets.chomp.to_i until change.between?(1, 50)
+              @options[:turns] = change
+            when 1 # code length
+              print "Length: (1-10) "
+              change = gets.chomp.to_i until change.between?(1, 10)
+              @options[:length] = change
+            when 2 # character options
+              print "Characters: (1-9) "
+              change = gets.chomp.to_i until change.between?(1, 9)
+              @options[:characters] = change
+            when 3, 4
+              change = 'a'
+              print " Allowed? (y/n): "
+              change = gets.chomp until ['y', 'n'].include?(change)
+            when 3 # blanks?
+              options[:blanks] = change == 'y' ? true : false
+            when 4 # duplicates?
+              options[:duplicates] = change == 'y' ? true : false
+            end
+          end
+        end
+      end
     end
 
     def codemaster?
@@ -144,7 +198,7 @@ module MasterMind
     def get_code
       valid = false
       until valid do
-        print "#{@players[@codemaster].name}, please provide a code: "
+        print "#{@players[@codemaster].name}, please provide a code: " 
         code = gets.chomp.chars.map { |c| c.to_i }
         valid = valid_code?(code)
       end
@@ -242,6 +296,7 @@ module MasterMind
     def reset
       @codemaster = 0
       @players = []
+      @options = {turns: 12, length: 4, characters: 6, blanks: false, duplicates: false}
       setup
       play_round
     end
