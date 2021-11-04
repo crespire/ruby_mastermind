@@ -1,23 +1,3 @@
-=begin
-  Player
-    * Has a name
-    * Optionally, has secret
-    * Can make a guess
-      * Take input, send to board
-  Secret
-    * Evaluates guesses against the secret
-    * Provides feedback on the guess.
-  GameRound
-    * Sets secret validation after asking
-      * Default case should be: 4 slots, taking 1 - 6, no blanks and no duplicates
-      * Additional options
-        * More slots
-        * Are blanks allowed? (Add 0 to options)
-        * Are duplicates allowed? (Able to enter same number twice)
-    * Keeps track of guesses
-    * Keeps track of which player is guessing
-=end
-
 # frozen_string_literal: true
 
 module MasterMind
@@ -131,7 +111,6 @@ module MasterMind
     end
 
     def codemaster?
-      # Require input
       valid = false
       until valid do
         puts "Player 0: Computer" if @use_comp
@@ -220,7 +199,7 @@ module MasterMind
 
       secret = @players[@codemaster].secret
 
-      # system("clear") || system("cls")
+      system("clear") || system("cls")
 
       start = @options[:blanks] ? 0 : 1
       dup = @options[:duplicates] ? '' : 'no '
@@ -230,7 +209,6 @@ module MasterMind
       result = nil
 
       @options[:turns].times do |i|
-        # Run the rounds
         guess = @codemaster.zero? ? get_guess : generate_guess(guess, result)
         result = secret.compare(guess)
         if result[0] == secret.length
@@ -240,8 +218,6 @@ module MasterMind
         else
           puts "#{i+1}: You got #{result[0]} exact matches, and there were #{result[1]} additional matches, but not in the right place."
         end
-        print "Press key to continue"
-        gets.chomp
       end
 
       puts "You didn't break the code! The code was #{secret}." unless broken
