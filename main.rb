@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module MasterMind
-
   # Class to handle player actions
   class Player
     attr_accessor :secret, :name, :codemaster
@@ -46,7 +45,7 @@ module MasterMind
       end
 
       # Checks value match
-      guess_copy.uniq!      
+      guess_copy.uniq!
       guess_copy.each do |element|
         results[1] += combo_copy.count(element) unless element.nil?
       end
@@ -59,14 +58,14 @@ module MasterMind
   class Game
     attr_reader :options
 
-    def initialize()
+    def initialize
       @players = []
       @codemaster = 0
       @use_comp = nil
       @possible = nil
-    
+
       # Default game options
-      @options = {turns: 12, length: 4, characters: 6, blanks: false, duplicates: false}
+      @options = { turns: 12, length: 4, characters: 6, blanks: false, duplicates: false }
       @options.default = ''
     end
 
@@ -75,11 +74,11 @@ module MasterMind
       # Send a welcome message displaying the rules.
       # Ask if players want to change the rules
 
-      puts "Welcome to Mastermind!"
-      
+      puts 'Welcome to Mastermind!'
+
       valid = false
-      until valid do
-        print "How many players are there today? "
+      until valid
+        print 'How many players are there today? '
         answer = gets.chomp.to_i
         @use_comp = answer == 1 ? true : false
         valid = answer.between?(1,2)
@@ -92,8 +91,8 @@ module MasterMind
       @players.push(Player.new(name))
       puts "Hello #{name}, welcome to Mastermind!"
 
-      if !@use_comp
-        print "Player 2, please enter your name: "
+      unless @use_comp
+        print 'Player 2, please enter your name: '
         name = gets.chomp
         @players.push(Player.new(name))
         puts "Welcome, #{name}!"
@@ -101,21 +100,20 @@ module MasterMind
 
       puts "Let's get started!"
       change_rules?
-
     end
 
     def change_rules?
       # Allow players to change the rules
-      puts "Here are the current rules for the game."
-      puts "The code must be %{length} characters in length, and there are %{characters} options for each slot." % @options
-      puts "The code #{@options[:blanks] ? "can" : "can't"} contain any blanks."
-      puts "The code #{@options[:duplicates] ? "can" : "can't"} contain duplicates."
+      puts 'Here are the current rules for the game.'
+      puts 'The code must be %{length} characters in length, and there are %{characters} options for each slot.' % @options
+      puts "The code #{@options[:blanks] ? 'can' : "can't"} contain any blanks."
+      puts "The code #{@options[:duplicates] ? 'can' : "can't"} contain duplicates."
       puts "The codebreaker has #{@options[:turns]} tries to break the code."
 
-      print "Did you want to change the rules? (y/n) "
-      input = gets.chomp until (['y', 'n'].include?(input))
+      print 'Did you want to change the rules? (y/n) '
+      input = gets.chomp until %w[y n].include?(input)
 
-      if input == 'y' then
+      if input == 'y'
         map = Hash.new('')
         puts "Let's change the rules of the game!"
         @options.each_with_index do | (k, v), i|
@@ -124,42 +122,40 @@ module MasterMind
         end
 
         loop do
-          puts "What would you like to change?"
+          puts 'What would you like to change?'
           print "You can use the numbers in front of the option, or if you're done, type 'done' "
           valid = false
-          until valid do
+          until valid
             ans = gets.chomp
-            valid = (ans.to_i.between?(-1, map.length - 1)) || ans == 'done'
+            valid = ans.to_i.between?(-1, map.length - 1) || ans == 'done'
           end
 
-          if ans == 'done'
-            break
-          else
-            print "Changing #{map[ans.to_i].capitalize}. "
-            change = 0
+          break if ans == 'done'
 
-            case ans.to_i
-            when 0 # turns
-              print "Turns: (1-50) "
-              change = gets.chomp.to_i until change.between?(1, 50)
-              @options[:turns] = change
-            when 1 # code length
-              print "Length: (1-10) "
-              change = gets.chomp.to_i until change.between?(1, 10)
-              @options[:length] = change
-            when 2 # character options
-              print "Characters: (1-9) "
-              change = gets.chomp.to_i until change.between?(1, 9)
-              @options[:characters] = change
-            when 3, 4
-              change = 'a'
-              print " Allowed? (y/n): "
-              change = gets.chomp until ['y', 'n'].include?(change)
-            when 3 # blanks?
-              options[:blanks] = change == 'y' ? true : false
-            when 4 # duplicates?
-              options[:duplicates] = change == 'y' ? true : false
-            end
+          print "Changing #{map[ans.to_i].capitalize}. "
+          change = 0
+
+          case ans.to_i
+          when 0 # turns
+            print 'Turns: (1-50) '
+            change = gets.chomp.to_i until change.between?(1, 50)
+            @options[:turns] = change
+          when 1 # code length
+            print 'Length: (4-8) '
+            change = gets.chomp.to_i until change.between?(4, 6)
+            @options[:length] = change
+          when 2 # character options
+            print 'Characters: (6-9) '
+            change = gets.chomp.to_i until change.between?(6, 9)
+            @options[:characters] = change
+          when 3, 4
+            change = 'a'
+            print 'Allowed? (y/n): '
+            change = gets.chomp until %w[y n].include?(change)
+          when 3 # blanks?
+            options[:blanks] = change == 'y'
+          when 4 # duplicates?
+            options[:duplicates] = change == 'y'
           end
         end
       end
@@ -167,59 +163,57 @@ module MasterMind
 
     def codemaster?
       valid = false
-      until valid do
-        puts "Player 0: Computer" if @use_comp
+      until valid
+        puts 'Player 0: Computer' if @use_comp
         lower_bound = @use_comp ? 0 : 1
-        @players.each_with_index { |e, i| puts "Player #{i}: #{e.name}\n" if i > 0  }
-        print "Which player will be the code master? "
+        @players.each_with_index { |e, i| puts "Player #{i}: #{e.name}\n" if i.positive? }
+        print 'Which player will be the code master? '
         @codemaster = gets.chomp.to_i
         valid = @codemaster.between?(lower_bound, (@players.length - 1))
       end
       puts "#{@players[@codemaster].name} is the codemaster!"
-      @players[@codemaster].codemaster=true
+      @players[@codemaster].codemaster = true
 
-      if @codemaster.zero? && @use_comp then
+      if @codemaster.zero? && @use_comp
         generate_code
       else
-        get_code
+        player_code
       end
     end
 
     def generate_code
       valid = false
-      until valid do
-        gen_code = @options[:length].times.map { rand(1..@options[:characters]) } 
+      until valid
+        gen_code = @options[:length].times.map { rand(1..@options[:characters]) }
         valid = valid_code?(gen_code)
       end
-      @players[@codemaster].secret=(Secret.new(gen_code))
+      @players[@codemaster].secret = Secret.new(gen_code)
     end
 
-    def get_code
+    def player_code
       valid = false
-      until valid do
-        print "#{@players[@codemaster].name}, please provide a code: " 
-        code = gets.chomp.chars.map { |c| c.to_i }
+      until valid
+        print "#{@players[@codemaster].name}, please provide a code: "
+        code = gets.chomp.chars.map(&:to_i)
         valid = valid_code?(code)
       end
-      @players[@codemaster].secret=(Secret.new(code))
+      @players[@codemaster].secret = Secret.new(code)
     end
 
-    def get_guess
-      # Get a guess. Check the secret to make sure it's valid.
+    def player_guess
+      name = @use_comp ? @players[1].name : @players[3 - @codemaster].name
+
       valid = false
-
-      name = @use_comp ? @players[1].name : @players[3-@codemaster].name
-
-      until valid do
+      until valid
         print "#{name}, please enter a guess: "
-        guess = gets.chomp.chars.map { |c| c.to_i }
+        guess = gets.chomp.chars.map(&:to_i)
         valid = valid_guess?(guess)
       end
       guess
     end
 
     def generate_guess(previous = nil, hints = nil)
-      puts "The computer is making a guess..."
+      puts 'The computer is making a guess...'
       if previous.nil?
         guess = [1, 1, 2, 2]
         base = @options[:blanks] ? 0 : 1
@@ -227,7 +221,7 @@ module MasterMind
         end_num = start_num * @options[:characters].to_i
         @possible = (start_num..end_num).to_a
       else
-        @possible.filter! { |code| code if (Secret.new(code.to_s.chars.map(&:to_i)).compare(previous) <=> hints) == 0 }
+        @possible.filter! { |code| code if (Secret.new(code.to_s.chars.map(&:to_i)).compare(previous) <=> hints).zero? }
         guess = @possible.shift.to_s.chars.map(&:to_i)
       end
       guess
@@ -237,15 +231,15 @@ module MasterMind
       # Checks if the code provided is within the rules.
       return false unless right_length?(code)
       return false unless in_bounds?(code)
-      return false if has_duplicates?(code) && !@options[:duplicates]
-      
+      return false if duplicates?(code) && !@options[:duplicates]
+
       true
     end
 
     def valid_guess?(code)
       # Checks if the code provided is the right length only.
       return false unless right_length?(code)
-      
+
       true
     end
 
@@ -253,35 +247,35 @@ module MasterMind
       codemaster?
 
       secret = @players[@codemaster].secret
-
-      system("clear") || system("cls")
-
       start = @options[:blanks] ? 0 : 1
-      dup = @options[:duplicates] ? '' : 'no '
-      puts "Remember, the code is #{@options[:length]} characters long and can entries are between #{start} and #{@options[:characters]}. The code has #{dup}duplicate entries."
+      dup = @options[:duplicates] ? '' : "'t"
       broken = false
       guess = nil
       result = nil
 
+      system('clear') || system('cls')
+      puts "Remember, the code is #{@options[:length]} characters long."
+      puts "Entries can be between #{start} and #{@options[:characters]} and can#{dup} have duplicate entries."
+
       @options[:turns].times do |i|
-        guess = @codemaster.zero? ? generate_guess(guess, result) : get_guess
+        guess = @codemaster.zero? ? player_guess : generate_guess(guess, result)
         result = secret.compare(guess)
         if result[0] == secret.length
           broken = true
-          puts "Game over! Cracking the code took #{i+1} turns. The code was: #{secret}."
+          puts "Game over! Cracking the code took #{i + 1} turns. The code was: #{secret}."
           break
         else
-          puts "#{i+1}: There were #{result[0]} exact matches, and there were #{result[1]} additional matches in the wrong places."
+          puts "#{i + 1}: There were #{result[0]} exact matches, and there were #{result[1]} additional matches."
         end
       end
 
       puts "The code was too strong! Try again another time. The code was #{secret}." unless broken
 
       valid = false
-      until valid do
-        print "Would you like to play again? (y/n) "
+      until valid
+        print 'Would you like to play again? (y/n) '
         ans = gets.chomp
-        valid = ['y', 'n'].include?(ans)
+        valid = %w[y n].include?(ans)
       end
 
       if ans == 'y'
@@ -292,12 +286,13 @@ module MasterMind
     end
 
     private
+
     def reset
       @players = []
       @codemaster = 0
       @use_comp = nil
       @possible = nil
-      @options = {turns: 12, length: 4, characters: 6, blanks: false, duplicates: false}
+      @options = { turns: 12, length: 4, characters: 6, blanks: false, duplicates: false }
 
       setup
       play_round
@@ -312,12 +307,12 @@ module MasterMind
       code.all? { |digit| digit.between?(lower, @options[:characters]) }
     end
 
-    def has_duplicates?(code)
+    def duplicates?(code)
       code.length != code.uniq.length
     end
   end
 end
 
-mstr = MasterMind::Game.new()
+mstr = MasterMind::Game.new
 mstr.setup
 mstr.play_round
