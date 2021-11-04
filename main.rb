@@ -211,7 +211,7 @@ module MasterMind
       result = nil
 
       @options[:turns].times do |i|
-        guess = @codemaster.zero? ? get_guess : generate_guess(guess, result)
+        guess = @codemaster.zero? ? generate_guess(guess, result) : get_guess
         result = secret.compare(guess)
         if result[0] == secret.length
           broken = true
