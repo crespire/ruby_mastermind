@@ -185,7 +185,6 @@ module MasterMind
     end
 
     def generate_guess(previous = nil, hints = nil)
-      # Computer guess.
       puts "The computer is making a guess..."
       if previous.nil?
         guess = [1, 1, 2, 2]
@@ -194,20 +193,9 @@ module MasterMind
         end_num = start_num * @options[:characters].to_i
         @possible = (start_num..end_num).to_a
       else
-        # use hints
-        last = Secret.new(previous)
-        puts "Last guess: #{last} and feedback #{hints}, current possibilities: #{@possible.length}"
-        @possible.filter! do |code|
-          comp_ar = last.compare(code.to_s.chars.map(&:to_i))
-          puts "#{(comp_ar <=> hints) >= 0 ? "keep" : "discard"} code: #{code}, got #{comp_ar} vs #{hints}"
-          sleep(0.05)
-          code if (comp_ar <=> hints) >= 0
-        end
-        puts "Filtered possibilities: #{@possible.length}, contains answer: #{@possible.include?(@players[@codemaster].secret.to_i)}"
-
-        guess = @possible.shift.to_s.chars.map(&:to_i) # I think I'm missing something here or in my filter. Sometimes it's not reducing the possibilties
+        @possible.filter! { |code| code if (Secret.new(code.to_s.chars.map(&:to_i)).compare(previous) <=> hints) == 0 }
+        guess = @possible.shift.to_s.chars.map(&:to_i)
       end
-      puts "Guess is: #{guess}"
       guess
     end
 
