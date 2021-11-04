@@ -196,11 +196,16 @@ module MasterMind
       else
         # use hints
         last = Secret.new(previous)
-        puts "Last guess: #{last}, current possibilities: #{@possible.length}"
-        @possible.filter! { |code| code if (last.compare(code.to_s.chars.map(&:to_i)) <=> hints) >= 0 }
+        puts "Last guess: #{last} and feedback #{hints}, current possibilities: #{@possible.length}"
+        @possible.filter! do |code|
+          comp_ar = last.compare(code.to_s.chars.map(&:to_i))
+          puts "#{(comp_ar <=> hints) >= 0 ? "keep" : "discard"} code: #{code}, got #{comp_ar} vs #{hints}"
+          sleep(0.05)
+          code if (comp_ar <=> hints) >= 0
+        end
         puts "Filtered possibilities: #{@possible.length}, contains answer: #{@possible.include?(@players[@codemaster].secret.to_i)}"
 
-        guess = @possible.sample.to_s.chars.map(&:to_i) # I think I'm missing something here or in my filter. Sometimes it's not reducing the possibilties
+        guess = @possible.shift.to_s.chars.map(&:to_i) # I think I'm missing something here or in my filter. Sometimes it's not reducing the possibilties
       end
       puts "Guess is: #{guess}"
       guess
@@ -247,6 +252,8 @@ module MasterMind
         else
           puts "#{i+1}: You got #{result[0]} exact matches, and there were #{result[1]} additional matches, but not in the right place."
         end
+        print "Press key to continue"
+        gets.chomp
       end
 
       puts "You didn't break the code! The code was #{secret}." unless broken
