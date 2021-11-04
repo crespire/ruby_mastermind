@@ -153,9 +153,9 @@ module MasterMind
             print 'Allowed? (y/n): '
             change = gets.chomp until %w[y n].include?(change)
           when 3 # blanks?
-            options[:blanks] = change == 'y'
+            @options[:blanks] = change == 'y'
           when 4 # duplicates?
-            options[:duplicates] = change == 'y'
+            @options[:duplicates] = change == 'y'
           end
         end
       end
