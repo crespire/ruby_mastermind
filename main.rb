@@ -262,21 +262,3 @@ end
 mstr = MasterMind::Game.new()
 mstr.setup
 mstr.play_round
-
-# Testing guess compare
-#code = MasterMind::Secret.new([4, 3, 6, 2])
-#p code.compare([2,2,2,2])
-#p code.compare([2,6,3,4])
-#p code.compare([4,1,2,6])
-#p code.compare([3,3,3,3])
-#p code.compare([4,3,6,2])
-#p code.length
- 
-#code2 = MasterMind::Secret.new([5,6,1,3])
-# p code2.compare([1,1,2,2])
-# p code2.compare([1,1,1,1])
-
-#code3 = MasterMind::Secret.new([1,2,1,5])
-#p code3.compare([1,1,2,2]) #Expect [1, 2]
-#p code3.compare([2,2,1,1]) #Expect [2, 1]
-#p code3.compare([1,2,3,4]) #Expect [2, 0]
