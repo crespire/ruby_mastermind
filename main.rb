@@ -79,7 +79,7 @@ module MasterMind
       valid = false
       until valid do
         print "How many players are there today? "
-        answer = gets.chomp!.to_i
+        answer = gets.chomp.to_i
         @use_comp = answer == 1 ? true : false
         valid = answer.between?(1,2)
       end
@@ -87,13 +87,13 @@ module MasterMind
       @players.push(Player.new('Computer'))
 
       print "Let's get set up! Player 1, please enter your name: "
-      name = gets.chomp!
+      name = gets.chomp
       @players.push(Player.new(name))
       puts "Hello #{name}, welcome to Mastermind!"
 
       if !@use_comp
         print "Player 2, please enter your name: "
-        name = gets.chomp!
+        name = gets.chomp
         @players.push(Player.new(name))
         puts "Welcome, #{name}!"
       end
@@ -171,7 +171,7 @@ module MasterMind
         lower_bound = @use_comp ? 0 : 1
         @players.each_with_index { |e, i| puts "Player #{i}: #{e.name}\n" if i > 0  }
         print "Which player will be the code master? "
-        @codemaster = gets.chomp!.to_i
+        @codemaster = gets.chomp.to_i
         valid = @codemaster.between?(lower_bound, (@players.length - 1))
       end
       puts "#{@players[@codemaster].name} is the codemaster!"
@@ -211,7 +211,7 @@ module MasterMind
 
       until valid do
         print "#{name}, please enter a guess: "
-        guess = gets.chomp!.chars.map { |c| c.to_i }
+        guess = gets.chomp.chars.map { |c| c.to_i }
         valid = valid_guess?(guess)
       end
       guess
@@ -279,7 +279,7 @@ module MasterMind
       valid = false
       until valid do
         print "Would you like to play again? (y/n) "
-        ans = gets.chomp!
+        ans = gets.chomp
         valid = ['y', 'n'].include?(ans)
       end
 
