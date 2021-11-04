@@ -122,8 +122,6 @@ module MasterMind
           map[i] = k
         end
 
-        p map
-
         loop do
           puts "What would you like to change?"
           print "You can use the numbers in front of the option, or if you're done, type 'done' "
