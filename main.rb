@@ -99,15 +99,17 @@ module MasterMind
       end
 
       puts "Let's get started!"
+      change_rules?
+
+    end
+
+    def change_rules?
+      # Allow players to change the rules
       puts "Here are the current rules for the game."
       puts "The code must be %{length} characters in length, and there are %{characters} options for each slot." % @options
       puts "The code #{@options[:blanks] ? "can" : "can't"} contain any blanks."
       puts "The code #{@options[:duplicates] ? "can" : "can't"} contain duplicates."
       puts "The codebreaker has #{@options[:turns]} tries to break the code."
-    end
-
-    def change_rules
-      # Allow players to change the rules - work on this after the main game is complete.
     end
 
     def codemaster?
