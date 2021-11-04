@@ -215,14 +215,14 @@ module MasterMind
         result = secret.compare(guess)
         if result[0] == secret.length
           broken = true
-          puts "You won! You took #{i+1} turns to guess the code, which was #{secret}."
+          puts "Game over! Cracking the code took #{i+1} turns. The code was: #{secret}."
           break
         else
-          puts "#{i+1}: You got #{result[0]} exact matches, and there were #{result[1]} additional matches, but not in the right place."
+          puts "#{i+1}: There were #{result[0]} exact matches, and there were #{result[1]} additional matches in the wrong places."
         end
       end
 
-      puts "You didn't break the code! The code was #{secret}." unless broken
+      puts "The code was too strong! Try again another time. The code was #{secret}." unless broken
 
       valid = false
       until valid do
