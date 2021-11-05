@@ -80,8 +80,8 @@ module MasterMind
       until valid
         print 'How many players are there today? '
         answer = gets.chomp.to_i
-        @use_comp = answer == 1 ? true : false
-        valid = answer.between?(1,2)
+        @use_comp = answer == 1
+        valid = answer.between?(1, 2)
       end
 
       @players.push(Player.new('Computer'))
@@ -113,50 +113,50 @@ module MasterMind
       print 'Did you want to change the rules? (y/n) '
       input = gets.chomp until %w[y n].include?(input)
 
-      if input == 'y'
-        map = Hash.new('')
-        puts "Let's change the rules of the game!"
-        @options.each_with_index do | (k, v), i|
-          puts "#{i}: #{k.to_s.capitalize} is #{v}"
-          map[i] = k
+      return unless input == 'y'
+
+      map = Hash.new('')
+      puts "Let's change the rules of the game!"
+      @options.each_with_index do |(k, v), i|
+        puts "#{i}: #{k.to_s.capitalize} is #{v}"
+        map[i] = k
+      end
+
+      loop do
+        puts 'What would you like to change?'
+        print "You can use the numbers in front of the option, or if you're done, type 'done' "
+        valid = false
+        until valid
+          ans = gets.chomp
+          valid = ans.to_i.between?(-1, map.length - 1) || ans == 'done'
         end
 
-        loop do
-          puts 'What would you like to change?'
-          print "You can use the numbers in front of the option, or if you're done, type 'done' "
-          valid = false
-          until valid
-            ans = gets.chomp
-            valid = ans.to_i.between?(-1, map.length - 1) || ans == 'done'
-          end
+        break if ans == 'done'
 
-          break if ans == 'done'
+        print "Changing #{map[ans.to_i].capitalize}. "
+        change = 0
 
-          print "Changing #{map[ans.to_i].capitalize}. "
-          change = 0
-
-          case ans.to_i
-          when 0 # turns
-            print 'Turns: (1-50) '
-            change = gets.chomp.to_i until change.between?(1, 50)
-            @options[:turns] = change
-          when 1 # code length
-            print 'Length: (4-8) '
-            change = gets.chomp.to_i until change.between?(4, 6)
-            @options[:length] = change
-          when 2 # character options
-            print 'Characters: (6-9) '
-            change = gets.chomp.to_i until change.between?(6, 9)
-            @options[:characters] = change
-          when 3, 4
-            change = 'a'
-            print 'Allowed? (y/n): '
-            change = gets.chomp until %w[y n].include?(change)
-          when 3 # blanks?
-            @options[:blanks] = change == 'y'
-          when 4 # duplicates?
-            @options[:duplicates] = change == 'y'
-          end
+        case ans.to_i
+        when 0 # turns
+          print 'Turns: (1-50) '
+          change = gets.chomp.to_i until change.between?(1, 50)
+          @options[:turns] = change
+        when 1 # code length
+          print 'Length: (4-8) '
+          change = gets.chomp.to_i until change.between?(4, 6)
+          @options[:length] = change
+        when 2 # character options
+          print 'Characters: (6-9) '
+          change = gets.chomp.to_i until change.between?(6, 9)
+          @options[:characters] = change
+        when 3, 4
+          change = 'a'
+          print 'Allowed? (y/n): '
+          change = gets.chomp until %w[y n].include?(change)
+        when 3 # blanks?
+          @options[:blanks] = change == 'y'
+        when 4 # duplicates?
+          @options[:duplicates] = change == 'y'
         end
       end
     end
