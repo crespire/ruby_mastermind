@@ -37,11 +37,11 @@ module MasterMind
 
       # Checks position/value match
       @combo.each_with_index do |element, index|
-        if guess[index] == element
-          results[0] += 1
-          guess_copy[index] = nil
-          combo_copy[index] = nil
-        end
+        next unless guess[index] == element
+
+        results[0] += 1
+        guess_copy[index] = nil
+        combo_copy[index] = nil
       end
 
       # Checks value match
@@ -213,7 +213,7 @@ module MasterMind
     end
 
     def generate_guess(previous = nil, hints = nil)
-      puts 'The computer is making a guess...'
+      print 'The computer is making a guess...'
       if previous.nil?
         guess = [1, 1, 2, 2]
         base = @options[:blanks] ? 0 : 1
@@ -224,6 +224,7 @@ module MasterMind
         @possible.filter! { |code| code if (Secret.new(code.to_s.chars.map(&:to_i)).compare(previous) <=> hints).zero? }
         guess = @possible.shift.to_s.chars.map(&:to_i)
       end
+      puts " let's go with #{guess}"
       guess
     end
 
