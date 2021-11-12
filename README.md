@@ -6,6 +6,8 @@ This Ruby Mastermind supports playing against a computer as either the code make
 
 The default rules are shown before the game begins, but you can also change the parameters if you so desire.
 
+The source code is available on GitHub at https://github.com/crespire/mastermind
+
 Play it online at https://replit.com/@crespire/Ruby-Mastermind
 
 # TODO
