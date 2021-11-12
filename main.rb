@@ -221,7 +221,7 @@ module MasterMind
         end_num = start_num * @options[:characters].to_i
         @possible = (start_num..end_num).to_a
       else
-        @possible.filter! { |code| code if (Secret.new(code.to_s.chars.map(&:to_i)).compare(previous) <=> hints).zero? }
+        @possible.select! { |code| code if (Secret.new(code.to_s.chars.map(&:to_i)).compare(previous) <=> hints).zero? }
         guess = @possible.shift.to_s.chars.map(&:to_i)
       end
       puts " let's go with #{guess}"
